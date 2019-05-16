@@ -4,7 +4,6 @@ import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Topological;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.lang.IllegalArgumentException;
 
 /*
  * Directed Graph implementation of WordNet. To satisfy the running time requirements, the class also
@@ -12,9 +11,9 @@ import java.lang.IllegalArgumentException;
  */
 
 public class WordNet {
-	private Digraph G;									// Directed-graph representation of WordNet
-	private ArrayList<String> synsets;
-	private HashMap<String, ArrayList<Integer>> nouns;	// Hash table of nouns
+	private final Digraph G;									// Directed-graph representation of WordNet
+	private final ArrayList<String> synsets;
+	private final HashMap<String, ArrayList<Integer>> nouns;	// Hash table of nouns
 	
 	/*
 	 * Validate the noun - check if it is WordNet noun
@@ -26,9 +25,10 @@ public class WordNet {
 	/*
 	 * Constructor takes the name of two input files: synsets and hypernyms
 	 */
-	@SuppressWarnings("deprecation")
 	public WordNet(String synsets, String hypernyms)
 	{
+		if (synsets == null || hypernyms == null) throw new IllegalArgumentException();
+		
 		In synsetsFile = new In(synsets);				
 		In hypernymsFile = new In(hypernyms);
 		
@@ -69,10 +69,10 @@ public class WordNet {
 		int root = -1;
 		for (int i = 0; i < G.V(); i++)
 			if (G.outdegree(i) == 0)						// Check if the WordNet is rooted
-			{
+			{	
+				if (root != -1) throw new IllegalArgumentException();
 				root = i;
-				break;
-			}
+			}			
 		if (root == -1) throw new IllegalArgumentException();
 		
 		Topological tp = new Topological(G);
@@ -109,7 +109,7 @@ public class WordNet {
 		int minDist = Integer.MAX_VALUE;
 		for (int i = 0; i < G.V(); i++)
 			if (bfsA.hasPathTo(i) && bfsB.hasPathTo(i))
-				if (bfsA.distTo(i) + bfsA.distTo(i) < minDist)			// Find the minimum distance
+				if (bfsA.distTo(i) + bfsB.distTo(i) < minDist)			// Find the minimum distance
 					minDist = bfsA.distTo(i) + bfsB.distTo(i);
 		
 		return minDist;
@@ -130,19 +130,11 @@ public class WordNet {
 		String sap = null;
 		for (int i = 0; i < G.V(); i++)
 			if (bfsA.hasPathTo(i) && bfsB.hasPathTo(i))
-				if (bfsA.distTo(i) + bfsA.distTo(i) < minDist)	// Find the minimum distance
+				if (bfsA.distTo(i) + bfsB.distTo(i) < minDist)	// Find the minimum distance
 				{
 					minDist = bfsA.distTo(i) + bfsB.distTo(i);
 					sap = synsets.get(i);
 				}
 		return sap;	
-	}
-	
-	public static void main(String[] args)
-	{
-		String synsets = "synsets.txt";
-		String hypernyms = "hypernyms.txt";
-		WordNet net = new WordNet(synsets, hypernyms);
-		System.out.println(net.isNoun("Garchomp"));
 	}
 }
