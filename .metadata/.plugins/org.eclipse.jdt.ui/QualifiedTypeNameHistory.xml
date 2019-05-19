@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.DepthFirstDirectedPaths"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.Topological"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.Digraph"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.BreadthFirstDirectedPaths"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.StdIn"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.StdOut"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.Stack"/>
+</qualifiedTypeNameHistroy>

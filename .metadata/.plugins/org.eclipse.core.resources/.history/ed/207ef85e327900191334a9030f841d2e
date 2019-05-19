@@ -25,7 +25,6 @@ public class WordNet {
 	/*
 	 * Constructor takes the name of two input files: synsets and hypernyms
 	 */
-	@SuppressWarnings("deprecation")
 	public WordNet(String synsets, String hypernyms)
 	{
 		if (synsets == null || hypernyms == null) throw new IllegalArgumentException();

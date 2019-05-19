@@ -43,7 +43,7 @@ public class DirectedDFS {
 	}
 	
 	/*
-	 * Return one path (not the shortest) from the source to the vertex
+	 * Return the path from the source to the vertex
 	 */
 	public Iterable<Integer> pathTo(int v)
 	{

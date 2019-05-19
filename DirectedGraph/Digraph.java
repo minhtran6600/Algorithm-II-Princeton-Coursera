@@ -76,4 +76,16 @@ public class Digraph {
 	{
 		return e;
 	}
+	
+	/*
+	 * Compute the reverse of the Graph
+	 */
+	public Digraph reverse()
+	{
+		Digraph reverse = new Digraph(this.v);
+		for (int i = 0; i < this.v; i++)
+			for (int v: adj(i))
+				reverse.addEdge(v, i);
+		return reverse;
+	}
 }
