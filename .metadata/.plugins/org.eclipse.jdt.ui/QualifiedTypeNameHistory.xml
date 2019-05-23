@@ -7,8 +7,9 @@
 <fullyQualifiedTypeName name="edu.princeton.cs.algs4.StdIn"/>
 <fullyQualifiedTypeName name="edu.princeton.cs.algs4.StdOut"/>
 <fullyQualifiedTypeName name="edu.princeton.cs.algs4.Stack"/>
-<fullyQualifiedTypeName name="edu.princeton.cs.algs4.Bag"/>
 <fullyQualifiedTypeName name="edu.princeton.cs.algs4.WeightedQuickUnionUF"/>
 <fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="edu.princeton.cs.algs4.IndexMinPQ"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.Bag"/>
+<fullyQualifiedTypeName name="edu.princeton.cs.algs4.In"/>
 </qualifiedTypeNameHistroy>
