@@ -1,0 +1,6 @@
+import java.awt.Color;
+public class SeamCarver {
+	private int h, w;					// Height and width of the Picture
+	private Color[][] colors;			// Color of each pixel
+	
+}

@@ -1,0 +1,147 @@
+import java.awt.Color;
+import edu.princeton.cs.algs4.Picture;
+import edu.princeton.cs.algs4.EdgeWeightedDigraph;
+import edu.princeton.cs.algs4.DirectedEdge;
+import java.util.Stack;
+
+public class SeamCarver {
+	private int h, w;					// Height and width of the Picture
+	private Color[][] colors;			// Color of each pixel
+	private double distTo[];			// Distance to each vertex
+	private DirectedEdge edgeTo[];		// Edge to each vertex
+	
+	/*
+	 * Edge Relaxation
+	 */
+	private void relax(DirectedEdge e)
+	{
+		int v = e.from();
+		int w = e.to();
+		if (distTo[w] > distTo[v] + e.weight())
+		{
+			distTo[w] = distTo[v] + e.weight();
+			edgeTo[w] = e;
+		}
+	}
+	
+	/*
+	 * Constructor to the Seam Carver
+	 */
+	public SeamCarver(Picture picture)
+	{
+		h = picture.height();
+		w = picture.width();
+		colors = new Color[w][h];
+		
+		for (int i = 0; i < w; i++)
+			for (int j = 0; j < h; j++)
+			{
+				int rgb = picture.getRGB(i, j);
+				colors[i][j] = new Color(rgb);
+			}
+	}
+	
+	/*
+	 * Return the current picture
+	 */
+	public Picture picture()
+	{
+		Picture picture = new Picture(w, h);
+		for (int i = 0; i < w; i++)
+			for (int j = 0; j < h; j++)
+				picture.set(i, j, colors[i][j]);
+		return picture;
+	}
+	
+	/*
+	 * Return the width of the current picture
+	 */
+	public int width()
+	{
+		return w;
+	}
+	
+	/*
+	 * Return the height of the current picture
+	 */
+	public int height()
+	{
+		return h;
+	}
+	
+	/*
+	 * Return the energy of pixel (x,y)
+	 */
+	public double energy(int x, int y)
+	{
+		if (x < 0 || x >= w || y < 0 || y >= h) throw new IllegalArgumentException();
+		if (x == 0 || y == 0 || x == w - 1 || y == - 1) return 1000;
+		Color left = colors[x-1][y], right = colors[x+1][y];
+		Color up = colors[x][y-1], down = colors[x][y+1];
+		double x_comp_square =  (left.getRed() - right.getRed()) * (left.getRed() - right.getRed()) +
+								(left.getBlue() - right.getBlue()) * (left.getBlue() - right.getBlue()) +
+								(left.getGreen() - right.getGreen()) * (left.getGreen() - right.getGreen());
+		double y_comp_square =  (up.getRed() - down.getRed()) * (up.getRed() - down.getRed()) +
+								(up.getBlue() - down.getBlue()) * (up.getBlue() - down.getBlue()) +
+								(up.getGreen() - down.getGreen()) * (up.getGreen() - down.getGreen());
+		double energy = Math.sqrt(x_comp_square + y_comp_square);
+		return energy;
+	}
+	
+	/*
+	 * Sequence of indices for horizontal seam
+	 */
+	public int[] findHorizontalSeam()
+	{
+		EdgeWeightedDigraph G = new EdgeWeightedDigraph(h * w + 2);
+		distTo = new double[h * w + 2];
+		edgeTo = new DirectedEdge[h * w + 2];
+		for (int v = 1; v < h * w + 2; v++)
+			distTo[v] = Double.POSITIVE_INFINITY;
+		distTo[0] = 0.0;
+		for (int x = 0; x < w; x++)
+		{
+			G.addEdge(new DirectedEdge(0, x + 1, energy(x, 0)));				// Connect to the beginning
+			G.addEdge(new DirectedEdge((h - 1) * w + x + 1, h * w + 1, 0));		// Connect to the end
+		}
+		for (int y = 0; y < h - 1 ; y++)
+			for (int x = 0; x < w; x++)
+			{
+				G.addEdge(new DirectedEdge(y * w + x + 1, (y + 1) * w + x + 1, energy(x, y + 1)));
+				if (x > 0)
+					G.addEdge(new DirectedEdge(y * w + x + 1, (y + 1) * w + (x - 1) + 1, energy(x - 1, y + 1)));
+				if (x < w - 1)
+					G.addEdge(new DirectedEdge(y * w + x + 1, (y + 1) * w + (x + 1) + 1, energy(x + 1, y + 1)));
+			}
+		for (int v = 0; v <= h * w; v++)
+			for (DirectedEdge e: G.adj(v))
+				relax(e);
+		
+		int[] seam = new int[h];
+		int current = h * w + 1;
+		for (int i = h - 1; i >= 0; i--)
+		{
+			seam[i] = edgeTo[current].from();
+			current = edgeTo[current].from();
+		}
+		return seam;
+	}
+	
+	public static void main(String[] args)
+	{
+		Picture pic = new Picture("Minh_Tran.jpg");
+		SeamCarver sc = new SeamCarver(pic);
+		int[] left = {sc.colors[957][3].getRed(), sc.colors[957][3].getBlue(), sc.colors[957][3].getGreen()};
+		int[] right = {sc.colors[959][3].getRed(), sc.colors[959][3].getBlue(), sc.colors[959][3].getGreen()};
+		int[] up = {sc.colors[958][2].getRed(), sc.colors[958][2].getBlue(), sc.colors[958][2].getGreen()};
+		int[] down = {sc.colors[958][4].getRed(), sc.colors[957][4].getBlue(), sc.colors[958][4].getGreen()};
+
+		System.out.println(java.util.Arrays.toString(left));
+		System.out.println(java.util.Arrays.toString(right));
+		System.out.println(java.util.Arrays.toString(up));
+		System.out.println(java.util.Arrays.toString(down));
+		System.out.println(sc.energy(958, 3));
+		System.out.println(sc.width() + " " + sc.height());
+	}
+	
+}

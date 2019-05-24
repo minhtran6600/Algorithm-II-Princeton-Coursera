@@ -1,0 +1,35 @@
+import java.awt.Color;
+import edu.princeton.cs.algs4.Picture;
+public class SeamCarver {
+	private int h, w;					// Height and width of the Picture
+	private Color[][] colors;			// Color of each pixel
+	
+	/*
+	 * Constructor to the Seam Carver
+	 */
+	public SeamCarver(Picture picture)
+	{
+		h = picture.height();
+		w = picture.width();
+		colors = new Color[w][h];
+		
+		for (int i = 0; i < w; i++)
+			for (int j = 0; j < h; j++)
+			{
+				int rgb = picture.getRGB(i, j);
+				colors[i][j] = new Color(rgb);
+			}
+	}
+	
+	/*
+	 * Return the current picture
+	 */
+	public Picture picture()
+	{
+		Picture picture = new Picture(w, h);
+		for (int i = 0; i < w; i++)
+			for (int j = 0; j < h; j++)
+				picture.set(i, j, colors[i][j]);
+		return picture;
+	}
+}
