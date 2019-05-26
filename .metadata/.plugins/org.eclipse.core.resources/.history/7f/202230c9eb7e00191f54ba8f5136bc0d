@@ -1,0 +1,58 @@
+import edu.princeton.cs.algs4.In;
+public class BaseballElimination {
+	private final int[] w, l, r;				// The win, lose and left matches of each team
+	private final int[][] g;					// The number of remaining game between each team
+	private final String[] teams;				// The name of the participating teams
+	
+	/*
+	 * Constructor that read a file
+	 */
+	public BaseballElimination(String filename)
+	{
+		In in = new In(filename);
+		int numTeams = in.readInt();
+		
+		// Initialize the input
+		int[] w_in = new int[numTeams], l_in =  new int[numTeams], r_in = new int[numTeams];
+		String[] teams_in = new String[numTeams];
+		int[][] g_in = new int[numTeams][numTeams];
+		
+		for (int i = 0; i < numTeams; i++)
+		{
+			String inLine = in.readLine();
+			String[] input = inLine.split(" ");
+			
+			teams_in[i] = input[0];						// Store the input name
+			w_in[i] = Integer.parseInt(input[1]);		// Store the number of win games
+			l_in[i] = Integer.parseInt(input[2]);		// Store the number of lose games
+			r_in[i] = Integer.parseInt(input[3]);		// Store the number of remaining games
+			
+			for (int j = 0; j < numTeams; j++)			// Store the remaining games with specific opponents
+				g_in[i][j] = Integer.parseInt(input[4 + i]);
+		}
+		
+		w = w_in;
+		l = l_in;
+		r = r_in;
+		g = g_in;
+		teams = teams_in;
+	}
+	
+	/*
+	 * Return the number of team
+	 */
+	public int numberOfTeams()
+	{
+		return teams.length;
+	}
+	
+	/*
+	 * Return all teams
+	 */
+	
+	public static void main(String[] args)
+	{
+		BaseballElimination be = new BaseballElimination("input.txt");
+		System.out.println(java.util.Arrays.toString(be.teams));
+	}
+}
