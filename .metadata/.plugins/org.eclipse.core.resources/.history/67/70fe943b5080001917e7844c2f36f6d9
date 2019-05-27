@@ -1,0 +1,45 @@
+/*
+ * Implementation of String Symbol Table that implements the R-way tries
+ */
+public class StringST<Value> {
+	private final int R = 256;
+	private class Node {
+		Value val;
+		@SuppressWarnings("unchecked")
+		Node[] next = (Node[]) new Object[R];	
+	}
+	private Node root;
+	
+	public void put(String key, Value val)
+	{
+		root = put(root, key, val, 0);
+	}
+	
+	public Value get(String key)
+	{
+		Node x = get(root, key, 0);
+		if (x == null) return null;
+		return x.val;
+	}
+	
+	private Node put(Node current, String key, Value val, int d)
+	{
+		if (current == null) current = new Node();
+		if (d == key.length()) 
+		{
+			current.val = val;
+			return current;
+		}
+		char c = key.charAt(d);
+		current.next[c] = put(current.next[c], key, val, d + 1);
+		return current;
+	}
+	
+	private Node get(Node current, String key, int d)
+	{
+		if (current == null) return null;
+		if (d == key.length()) return current;
+		char c = key.charAt(d);
+		return current.next[c];
+	}
+}
