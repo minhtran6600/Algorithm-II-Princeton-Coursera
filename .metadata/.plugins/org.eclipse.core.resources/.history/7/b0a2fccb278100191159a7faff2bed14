@@ -1,0 +1,16 @@
+/*
+ * Implementation of the construction of Deterministic Finite state Automaton (DFA) in substring
+ * Search using Knuth-Morris-Pratt Algorithm
+ */
+public class KMP {
+	private String pat;
+	private int[][] dfa;
+	private final int R = 256;
+	
+	public KMP(String pat)
+	{
+		this.pat = pat;
+		this.dfa = new int[R][pat.length()];
+		
+	}
+}

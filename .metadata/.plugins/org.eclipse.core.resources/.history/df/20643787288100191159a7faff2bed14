@@ -1,0 +1,23 @@
+/*
+ * Implementation of the Knuth-Morris-Pratt Algorithm for substring search
+ */
+public class KMP {
+	private String pat;
+	private int[][] dfa;
+	private final int R = 256;
+	
+	public KMP(String pat)
+	{
+		this.pat = pat;
+		this.dfa = new int[R][pat.length()];
+		dfa[pat.charAt(0)][0] = 1;
+		
+		for (int X = 0, j = 1; j < pat.length(); j++)
+		{
+			for (int r = 0; r < R; r++)
+				dfa[r][j] = dfa[r][X];
+			dfa[pat.charAt(j)][j] = j + 1;
+			X = dfa[pat.charAt(j)][X];
+		}
+	}
+}
